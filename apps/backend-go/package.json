@@ -1,0 +1,14 @@
+{
+  "name": "backend-go",
+  "version": "1.0.0",
+  "description": "Go backend service for Verifile",
+  "main": "main.go",
+  "scripts": {
+    "dev": "go run main.go",
+    "build": "go build -o dist/server main.go"
+  },
+  "keywords": [],
+  "author": "Akdev Saha",
+  "license": "MIT",
+  "packageManager": "pnpm@10.4.1"
+}

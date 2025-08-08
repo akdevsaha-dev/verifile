@@ -100,3 +100,15 @@ export const signin = async (req: Request, res: Response) => {
         return;
     }
 }
+
+export const logout = (req: Request, res: Response) => {
+    res.cookie("jwt", "", {
+        maxAge: 0,
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "lax",
+    })
+    res.status(200).json({
+        message: "logged out successfully"
+    })
+}

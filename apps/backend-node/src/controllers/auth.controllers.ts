@@ -3,7 +3,6 @@ import { Request, Response } from "express"
 import bcrypt from "bcryptjs"
 import { generateToken } from "../utils/index.utils.js";
 import { z } from "zod"
-import { safeParse } from "zod/v4-mini";
 export const signup = async (req: Request, res: Response) => {
     const signupSchema = z.object({
         email: z.string().email(),
@@ -48,5 +47,56 @@ export const signup = async (req: Request, res: Response) => {
         res.status(400).json({
             message: "something went wrong"
         })
+    }
+}
+
+export const signin = async (req: Request, res: Response) => {
+    const signinSchema = z.object({
+        email: z.string().email(),
+        password: z.string().min(6)
+    })
+    const parsed = signinSchema.safeParse(req.body)
+    if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid input" });
+    }
+    const { email, password } = parsed.data;
+    try {
+        const userExists = await prisma.user.findUnique({
+            where: {
+                email
+            }
+        })
+        if (!userExists) {
+            res.status(400).json({
+                message: "Account doesnot exist. Please create one"
+            })
+            return;
+        }
+        if (!userExists?.password) {
+            res.json({
+                message: "Please enter credentials"
+            })
+            return;
+        }
+        const isPasswordValid = await bcrypt.compare(password, userExists.password)
+        if (!isPasswordValid) {
+            res.status(400).json({
+                message: "Incorrect password"
+            })
+            return;
+        }
+        generateToken(userExists.id, res)
+        res.status(201).json({
+            id: userExists.id,
+            email: userExists.email,
+            isAnonymous: userExists.isAnonymous
+        })
+        return;
+    } catch (error) {
+        console.error("signin error", error)
+        res.status(400).json({
+            message: "Something went wrong"
+        })
+        return;
     }
 }

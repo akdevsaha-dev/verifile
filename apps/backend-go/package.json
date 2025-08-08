@@ -7,6 +7,9 @@
     "dev": "go run main.go",
     "build": "go build -o dist/server main.go"
   },
+  "dependencies": {
+    "@repo/db": "workspace:*"
+  },
   "keywords": [],
   "author": "Akdev Saha",
   "license": "MIT",

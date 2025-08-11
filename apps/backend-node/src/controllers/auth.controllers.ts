@@ -20,7 +20,6 @@ export const signup = async (req: Request, res: Response) => {
             }
         })
         if (!userExists) {
-            console.log(process.env.SALT_ROUNDS)
             const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
             const hashedPassword = await bcrypt.hash(password, saltRounds)
             const user = await prisma.user.create({
@@ -111,4 +110,15 @@ export const logout = (req: Request, res: Response) => {
     res.status(200).json({
         message: "logged out successfully"
     })
+}
+
+export const checkAuth = (req: Request, res: Response) => {
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
 }

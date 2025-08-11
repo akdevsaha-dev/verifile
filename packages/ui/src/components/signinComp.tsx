@@ -6,10 +6,10 @@ import { Button } from "@workspace/ui/components/button";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { BACKEND_URL } from "@workspace/ui/lib/utils";
-interface SignupCompProp {
+interface SigninCompProp {
   onSuccess: () => void;
 }
-export const SignupComp = ({ onSuccess }: SignupCompProp) => {
+export const SigninComp = ({ onSuccess }: SigninCompProp) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -47,7 +47,7 @@ export const SignupComp = ({ onSuccess }: SignupCompProp) => {
         </div>
         <div className=" w-full h-full  flex items-center justify-center">
           <div className="h-[80vh] w-[30vw] ">
-            <div className="text-3xl font-semibold mt-14">Sign up</div>
+            <div className="text-3xl font-semibold mt-14">Sign in</div>
             <InputBox
               type="text"
               label="Email Address"
@@ -70,7 +70,7 @@ export const SignupComp = ({ onSuccess }: SignupCompProp) => {
               value={password}
               placeholder="●●●●●●●"
             />
-            <Button text="Sign up" onClick={onClickHandler} />
+            <Button text="Sign in" onClick={onClickHandler} />
           </div>
         </div>
       </div>

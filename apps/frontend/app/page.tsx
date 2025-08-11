@@ -1,9 +1,5 @@
-import { SignupComp } from "@workspace/ui/components/signupComp";
+"use client";
 
 export default function Page() {
-  return (
-    <div className="flex items-center justify-center min-h-svh">
-      <SignupComp />
-    </div>
-  );
+  return <div className="flex items-center justify-center min-h-svh">hi</div>;
 }

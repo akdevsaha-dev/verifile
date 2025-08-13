@@ -7,8 +7,6 @@ interface myJwtPayLoad extends JwtPayload {
     id: string
 }
 
-
-
 export const protectRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.cookies.jwt;
@@ -16,6 +14,7 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
             res.status(401).json({
                 message: "Unauthorized"
             })
+            return;
         }
         if (!process.env.JWT_SECRET) {
             throw new Error("JWT_SECRET is not defined in environment variables");
@@ -25,6 +24,7 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
             res.status(401).json({
                 message: "unauthorized- Invalid token",
             });
+            return;
         }
 
         const user = await prisma.user.findUnique({
@@ -40,14 +40,16 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
             }
         })
         if (!user) {
-            return res.status(401).json({ message: "User not found" });
+            res.status(401).json({ message: "User not found" });
+            return
         }
         req.user = user;
         next();
     } catch (error) {
         console.error(error);
-        res.json({
+        res.status(401).json({
             message: "middleware error",
         });
+        return;
     }
 }

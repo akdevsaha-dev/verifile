@@ -4,8 +4,7 @@ import { InputBox } from "@workspace/ui/components/inputBox";
 import { useRef, useState } from "react";
 import { Button } from "@workspace/ui/components/button";
 import { toast } from "react-hot-toast";
-import axios from "axios";
-import { BACKEND_URL } from "@workspace/ui/lib/utils";
+import { axiosInstance } from "@workspace/ui/lib/utils";
 interface SigninCompProp {
   onSuccess: () => void;
 }
@@ -20,13 +19,15 @@ export const SigninComp = ({ onSuccess }: SigninCompProp) => {
       });
     }
     try {
-      await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
+      await axiosInstance.post("/auth/signin", {
         email,
         password,
       });
       onSuccess();
     } catch (error) {
-      toast.error("Signup failed");
+      console.log(error, "something is wrong");
+      console.error(error);
+      toast.error("Signin failed honey");
     }
   };
   return (

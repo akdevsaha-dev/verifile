@@ -4,8 +4,7 @@ import { InputBox } from "@workspace/ui/components/inputBox";
 import { useRef, useState } from "react";
 import { Button } from "@workspace/ui/components/button";
 import { toast } from "react-hot-toast";
-import axios from "axios";
-import { BACKEND_URL } from "@workspace/ui/lib/utils";
+import { axiosInstance } from "@workspace/ui/lib/utils";
 interface SignupCompProp {
   onSuccess: () => void;
 }
@@ -20,7 +19,7 @@ export const SignupComp = ({ onSuccess }: SignupCompProp) => {
       });
     }
     try {
-      await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
+      await axiosInstance.post("/auth/signup", {
         email,
         password,
       });
